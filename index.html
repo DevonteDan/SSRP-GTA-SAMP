@@ -13,13 +13,12 @@
 </head>
 <body>
 
-  <!-- ============================================
-       SCREEN 1: LANDING (Upload)
-  ============================================= -->
+  <!-- =============================================
+       SCREEN: LANDING
+  ============================================== -->
   <div class="screen" id="screenLanding">
     <div class="landing-wrap">
 
-      <!-- Logo / Icon -->
       <div class="landing-icon">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="3" width="18" height="18" rx="2"/>
@@ -28,16 +27,13 @@
         </svg>
       </div>
 
-      <!-- Headline -->
       <h1 class="landing-title">Buat <span class="landing-accent">SS RP</span> Instan</h1>
       <p class="landing-desc">
         Upload screenshot GTA SA-MP, paste chatlog, dan download hasilnya dalam hitungan detik — tanpa Photoshop.
       </p>
 
-      <!-- Upload Button -->
       <div class="landing-upload-area" id="landingDropArea">
         <input type="file" id="fileInputLanding" accept="image/png,image/jpeg,image/webp" hidden>
-
         <button class="landing-btn" id="landingPickBtn">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -46,12 +42,10 @@
           </svg>
           Pilih Gambar Screenshot
         </button>
-
-        <p class="landing-drag-hint">atau seret & lepas gambar ke sini</p>
-        <p class="landing-format-hint">PNG, JPG, WebP</p>
+        <p class="landing-drag-hint">atau seret &amp; lepas gambar ke sini</p>
+        <p class="landing-format-hint">PNG &bull; JPG &bull; WebP</p>
       </div>
 
-      <!-- Footer -->
       <p class="landing-privacy">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
@@ -63,16 +57,23 @@
     </div>
   </div>
 
-  <!-- ============================================
-       SCREEN 2: EDITOR
-  ============================================= -->
-  <div class="screen hidden" id="screenEditor">
+  <!-- =============================================
+       SCREEN: LOADING
+  ============================================== -->
+  <div class="screen is-hidden" id="screenLoading">
+    <div class="loader-ring"></div>
+    <p class="loader-text">Memuat gambar...</p>
+  </div>
+
+  <!-- =============================================
+       SCREEN: EDITOR
+  ============================================== -->
+  <div class="screen is-hidden" id="screenEditor">
     <div class="layout">
 
       <!-- SIDEBAR -->
       <aside class="sidebar">
 
-        <!-- Brand / Back button -->
         <div class="brand">
           <button class="back-btn" id="backBtn" title="Kembali ke awal">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -94,72 +95,103 @@
 
         <div class="divider"></div>
 
-        <!-- Step 1: Change Image -->
+        <!-- Step 1: Chatlog -->
         <div class="section">
-          <div class="section-header">
-            <span class="step-badge">1</span>
-            <span class="section-title">Gambar Latar</span>
-          </div>
-          <div class="img-preview-box" id="imgPreviewBox">
-            <input type="file" id="fileInputEditor" accept="image/png,image/jpeg,image/webp" hidden>
-            <img id="editorThumb" alt="Preview gambar">
-            <button class="change-img-btn" id="changeImgBtn">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                <polyline points="17 8 12 3 7 8"/>
-                <line x1="12" y1="3" x2="12" y2="15"/>
-              </svg>
-              Ganti Gambar
+          <div class="section-header" style="justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 9px;">
+              <span class="step-badge">1</span>
+              <span class="section-title">Chatlog RP</span>
+            </div>
+            <button type="button" class="add-blur-btn" id="addChatlogBtn" style="width: auto; padding: 5px 10px; font-size: 11px;">
+              + Tambah Chatlog
             </button>
           </div>
+
+          <div id="chatlogCardsContainer" style="display: flex; flex-direction: column; gap: 12px;"></div>
+          <p class="field-hint" style="margin-top: 8px;">Timestamp [HH:MM:SS] dihapus otomatis. Teks aksi (*) berwarna ungu.</p>
         </div>
 
-        <!-- Step 2: Chatlog -->
+        <!-- Step 2: Settings -->
         <div class="section">
           <div class="section-header">
             <span class="step-badge">2</span>
-            <span class="section-title">Paste Chatlog</span>
-          </div>
-          <textarea
-            id="chatlogTextarea"
-            class="chatlog-input"
-            rows="7"
-            placeholder="[10:20:50] * Aiden Brooks melepas radio.&#10;[10:21:05] Aiden Brooks says: Unit 24-King, standby."
-            autocomplete="off"
-            autocorrect="off"
-            spellcheck="false"
-          ></textarea>
-          <p class="field-hint">Timestamp [HH:MM:SS] dihapus otomatis. Teks aksi (*) berwarna ungu.</p>
-        </div>
-
-        <!-- Step 3: Settings -->
-        <div class="section">
-          <div class="section-header">
-            <span class="step-badge">3</span>
-            <span class="section-title">Pengaturan Teks</span>
+            <span class="section-title">Pengaturan Teks &amp; Gambar</span>
           </div>
           <div class="settings-grid">
+            <div class="setting-item">
+              <div class="setting-label">
+                <span>Scale Gambar (Zoom)</span>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <button type="button" class="reset-scale-btn" id="resetScaleBtn" title="Reset Scale ke 100%">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                    Reset
+                  </button>
+                  <span class="setting-val" id="imageScaleValue">100%</span>
+                </div>
+              </div>
+              <input type="range" id="imageScaleSlider" min="50" max="200" value="100">
+            </div>
             <div class="setting-item">
               <div class="setting-label">
                 <span>Ukuran Font</span>
                 <span class="setting-val" id="fontSizeValue">16px</span>
               </div>
-              <input type="range" id="fontSizeSlider" min="10" max="32" value="16">
+              <input type="range" id="fontSizeSlider" min="10" max="48" value="16">
             </div>
             <div class="setting-item">
               <div class="setting-label">
-                <span>Margin Kiri</span>
+                <span>Posisi X (Margin Kiri)</span>
                 <span class="setting-val" id="paddingXValue">10px</span>
               </div>
-              <input type="range" id="paddingXSlider" min="0" max="100" value="10">
+              <input type="range" id="paddingXSlider" min="0" max="1000" value="10">
             </div>
             <div class="setting-item">
               <div class="setting-label">
-                <span>Margin Atas</span>
+                <span>Posisi Y (Margin Atas)</span>
                 <span class="setting-val" id="paddingYValue">10px</span>
               </div>
-              <input type="range" id="paddingYSlider" min="0" max="100" value="10">
+              <input type="range" id="paddingYSlider" min="0" max="1000" value="10">
             </div>
+          </div>
+          <p class="field-hint" style="margin-top: 4px; display: flex; align-items: center; gap: 4px;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--blue); flex-shrink: 0;">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            Teks juga bisa langsung digeser di preview menggunakan cursor atau sentuhan jari.
+          </p>
+        </div>
+        
+        <!-- Step 3: Image Effects & Sensor Blur -->
+        <div class="section">
+          <div class="section-header">
+            <span class="step-badge">3</span>
+            <span class="section-title">Efek &amp; Sensor Blur</span>
+          </div>
+          <div class="settings-grid">
+
+            <!-- Grayscale Switch -->
+            <div class="setting-item-toggle">
+              <label class="toggle-label" for="grayscaleToggle">
+                <input type="checkbox" id="grayscaleToggle">
+                <span class="toggle-slider"></span>
+                <span class="toggle-text">Hitam Putih (B&amp;W)</span>
+              </label>
+            </div>
+
+            <!-- Add Sensor Button -->
+            <button type="button" class="add-blur-btn" id="addBlurBtn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              + Tambah Sensor Blur
+            </button>
+
+            <!-- Sensor Cards Container -->
+            <div id="sensorCardsContainer" style="display: flex; flex-direction: column; gap: 12px; margin-top: 4px;"></div>
+
           </div>
         </div>
 
@@ -180,8 +212,18 @@
         <div class="preview-inner">
 
           <div class="preview-header">
-            <p class="preview-label">Live Preview</p>
-            <div class="preview-badge" id="previewBadge">Siap diunduh</div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <p class="preview-label">Live Preview</p>
+              <div class="drag-mode-switcher">
+                <button type="button" class="mode-btn active" id="modeDragTextBtn" title="Geser posisi teks">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px; margin-bottom:-2px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> Teks
+                </button>
+                <button type="button" class="mode-btn" id="modeDragBlurBtn" title="Geser posisi sensor blur">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px; margin-bottom:-2px;"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg> Sensor
+                </button>
+              </div>
+            </div>
+            <div class="preview-badge">Siap diunduh</div>
           </div>
 
           <div class="canvas-wrap">
@@ -204,7 +246,7 @@
   </div>
 
   <!-- Mobile Download Bar -->
-  <div class="mobile-bar" id="mobileBar">
+  <div class="mobile-bar" id="mobileBar" style="display:none;">
     <button class="download-btn" id="downloadBtnMobile">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
