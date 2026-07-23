@@ -179,7 +179,7 @@
 
     ctx.font = 'bold ' + fontSize + 'px Arial, sans-serif';
     ctx.textBaseline = 'top';
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 1.5;
     ctx.strokeStyle = '#000000';
     ctx.lineJoin = 'round';
     ctx.miterLimit = 2;
