@@ -1,40 +1,69 @@
 /* ============================================================
    SS RP Generator — app.js
-   Logic: Upload, Parse, Render Canvas, Download PNG
+   Two-screen flow: Landing → Editor
    ============================================================ */
 
 (function () {
   'use strict';
 
-  // ---- DOM References ----
-  const dropzone          = document.getElementById('dropzone');
-  const fileInput         = document.getElementById('fileInput');
-  const browseBtn         = document.getElementById('browseBtn');
-  const changeBtn         = document.getElementById('changeBtn');
-  const dropzoneBody      = document.getElementById('dropzoneBody');
-  const dropzonePreviewWrap = document.getElementById('dropzonePreviewWrap');
-  const dropzonePreview   = document.getElementById('dropzonePreview');
-  const chatlogTextarea   = document.getElementById('chatlogTextarea');
-  const canvas            = document.getElementById('previewCanvas');
-  const ctx               = canvas.getContext('2d');
-  const canvasEmpty       = document.getElementById('canvasEmpty');
-  const downloadBtn       = document.getElementById('downloadBtn');
-  const downloadBtnMobile = document.getElementById('downloadBtnMobile');
-  const fontSizeSlider    = document.getElementById('fontSizeSlider');
-  const fontSizeValue     = document.getElementById('fontSizeValue');
-  const paddingXSlider    = document.getElementById('paddingXSlider');
-  const paddingXValue     = document.getElementById('paddingXValue');
-  const paddingYSlider    = document.getElementById('paddingYSlider');
-  const paddingYValue     = document.getElementById('paddingYValue');
-  const previewBadge      = document.getElementById('previewBadge');
-  const toast             = document.getElementById('toast');
+  // ---- Screens ----
+  const screenLanding = document.getElementById('screenLanding');
+  const screenEditor  = document.getElementById('screenEditor');
+  const mobileBar     = document.getElementById('mobileBar');
+
+  // ---- Landing elements ----
+  const fileInputLanding = document.getElementById('fileInputLanding');
+  const landingPickBtn   = document.getElementById('landingPickBtn');
+  const landingDropArea  = document.getElementById('landingDropArea');
+
+  // ---- Editor elements ----
+  const fileInputEditor = document.getElementById('fileInputEditor');
+  const changeImgBtn    = document.getElementById('changeImgBtn');
+  const editorThumb     = document.getElementById('editorThumb');
+  const backBtn         = document.getElementById('backBtn');
+  const chatlogTextarea = document.getElementById('chatlogTextarea');
+  const canvas          = document.getElementById('previewCanvas');
+  const ctx             = canvas.getContext('2d');
+  const downloadBtn     = document.getElementById('downloadBtn');
+  const downloadBtnMob  = document.getElementById('downloadBtnMobile');
+  const fontSizeSlider  = document.getElementById('fontSizeSlider');
+  const fontSizeValue   = document.getElementById('fontSizeValue');
+  const paddingXSlider  = document.getElementById('paddingXSlider');
+  const paddingXValue   = document.getElementById('paddingXValue');
+  const paddingYSlider  = document.getElementById('paddingYSlider');
+  const paddingYValue   = document.getElementById('paddingYValue');
+  const previewBadge    = document.getElementById('previewBadge');
+  const toast           = document.getElementById('toast');
 
   // ---- State ----
   let uploadedImage = null;
   let settings = { fontSize: 16, paddingX: 10, paddingY: 10 };
 
   // ============================================================
-  // IMAGE UPLOAD HANDLER
+  // SCREEN TRANSITION
+  // ============================================================
+
+  function goToEditor() {
+    screenLanding.classList.add('hidden');
+    screenEditor.classList.remove('hidden');
+    // Show mobile bar on mobile
+    if (window.innerWidth <= 900) mobileBar.style.display = 'flex';
+  }
+
+  function goToLanding() {
+    screenEditor.classList.add('hidden');
+    screenLanding.classList.remove('hidden');
+    mobileBar.style.display = 'none';
+    // Reset state
+    uploadedImage = null;
+    chatlogTextarea.value = '';
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  backBtn.addEventListener('click', goToLanding);
+
+  // ============================================================
+  // FILE HANDLING
   // ============================================================
 
   function handleFile(file) {
@@ -50,66 +79,80 @@
       const img = new Image();
       img.onload = function () {
         uploadedImage = img;
-        // Show image preview inside dropzone
-        dropzonePreview.src = e.target.result;
-        dropzoneBody.hidden = true;
-        dropzonePreviewWrap.hidden = false;
+        editorThumb.src = e.target.result;
+        goToEditor();
         renderCanvas();
-        updateButtons();
       };
       img.src = e.target.result;
     };
     reader.readAsDataURL(file);
   }
 
-  // Click dropzone body → open file picker
-  dropzone.addEventListener('click', function (e) {
-    // Only trigger if clicking on the dropzone body (not the change button)
-    if (!dropzonePreviewWrap.hidden) return;
-    fileInput.click();
+  // --- Landing screen upload ---
+  landingPickBtn.addEventListener('click', function () {
+    fileInputLanding.click();
   });
 
-  browseBtn.addEventListener('click', function (e) {
-    e.stopPropagation();
-    fileInput.click();
-  });
-
-  fileInput.addEventListener('change', function (e) {
+  fileInputLanding.addEventListener('change', function (e) {
     if (e.target.files && e.target.files[0]) {
       handleFile(e.target.files[0]);
-      // Reset input so same file can be re-selected
       e.target.value = '';
     }
   });
 
-  // Change image button
-  changeBtn.addEventListener('click', function (e) {
-    e.stopPropagation();
-    fileInput.click();
-  });
-
-  // Drag and drop
-  dropzone.addEventListener('dragover', function (e) {
+  // Landing drag-and-drop
+  landingDropArea.addEventListener('dragover', function (e) {
     e.preventDefault();
-    e.stopPropagation();
-    dropzone.classList.add('dragover');
+    landingDropArea.classList.add('dragover');
   });
 
-  dropzone.addEventListener('dragleave', function (e) {
+  landingDropArea.addEventListener('dragleave', function (e) {
     e.preventDefault();
-    e.stopPropagation();
-    dropzone.classList.remove('dragover');
+    landingDropArea.classList.remove('dragover');
   });
 
-  dropzone.addEventListener('drop', function (e) {
+  landingDropArea.addEventListener('drop', function (e) {
     e.preventDefault();
-    e.stopPropagation();
-    dropzone.classList.remove('dragover');
-    const files = e.dataTransfer.files;
-    if (files && files[0]) handleFile(files[0]);
+    landingDropArea.classList.remove('dragover');
+    if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
   });
 
-  // Block default browser drag-drop outside dropzone
+  // Also allow dropping anywhere on landing screen
+  screenLanding.addEventListener('dragover', function (e) { e.preventDefault(); });
+  screenLanding.addEventListener('drop', function (e) {
+    e.preventDefault();
+    if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+  });
+
+  // --- Editor: change image ---
+  changeImgBtn.addEventListener('click', function () {
+    fileInputEditor.click();
+  });
+
+  fileInputEditor.addEventListener('change', function (e) {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      const validTypes = ['image/png', 'image/jpeg', 'image/webp'];
+      if (!validTypes.includes(file.type)) {
+        showToast('Format tidak didukung.');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = function (ev) {
+        const img = new Image();
+        img.onload = function () {
+          uploadedImage = img;
+          editorThumb.src = ev.target.result;
+          renderCanvas();
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+      e.target.value = '';
+    }
+  });
+
+  // Prevent accidental drop on window
   window.addEventListener('dragover', function (e) { e.preventDefault(); });
   window.addEventListener('drop', function (e) { e.preventDefault(); });
 
@@ -119,48 +162,27 @@
 
   function parseChatlog(rawText) {
     if (!rawText || !rawText.trim()) return [];
-    const lines = rawText.split('\n');
-    const parsed = [];
-
-    for (let i = 0; i < lines.length; i++) {
-      let line = lines[i].replace(/\s+$/, '');
-      // Remove timestamp [HH:MM:SS]
-      let cleanedText = line.replace(/^\[\d{2}:\d{2}:\d{2}\]\s*/, '');
-      if (!cleanedText.trim()) continue;
-
-      parsed.push({
-        text: cleanedText,
-        isAction: cleanedText.trim().startsWith('*'),
+    return rawText.split('\n')
+      .map(function (line) { return line.replace(/\s+$/, ''); })
+      .map(function (line) { return line.replace(/^\[\d{2}:\d{2}:\d{2}\]\s*/, ''); })
+      .filter(function (line) { return line.trim().length > 0; })
+      .map(function (text) {
+        return { text: text, isAction: text.trim().startsWith('*') };
       });
-    }
-    return parsed;
   }
 
   // ============================================================
-  // CANVAS RENDERING ENGINE
+  // CANVAS RENDERING
   // ============================================================
 
   function renderCanvas() {
-    if (!uploadedImage) {
-      canvas.style.display = 'none';
-      canvasEmpty.hidden = false;
-      setBadge(false);
-      return;
-    }
+    if (!uploadedImage) return;
 
-    // Show canvas
-    canvas.style.display = 'block';
-    canvasEmpty.hidden = true;
-    setBadge(true);
-
-    // Full resolution
     canvas.width  = uploadedImage.naturalWidth;
     canvas.height = uploadedImage.naturalHeight;
 
-    // Draw background
     ctx.drawImage(uploadedImage, 0, 0, canvas.width, canvas.height);
 
-    // Parse chatlog
     const parsedLines = parseChatlog(chatlogTextarea.value);
     if (parsedLines.length === 0) return;
 
@@ -169,17 +191,16 @@
     const startX     = settings.paddingX;
     const startY     = settings.paddingY;
 
-    ctx.font        = 'bold ' + fontSize + 'px Arial, sans-serif';
+    ctx.font         = 'bold ' + fontSize + 'px Arial, sans-serif';
     ctx.textBaseline = 'top';
     ctx.lineWidth    = 1.5;
     ctx.strokeStyle  = '#000000';
     ctx.lineJoin     = 'round';
     ctx.miterLimit   = 2;
 
-    parsedLines.forEach(function (line, index) {
-      const yPos = startY + (index * lineHeight);
+    parsedLines.forEach(function (line, i) {
+      const yPos = startY + (i * lineHeight);
       if (yPos + fontSize > canvas.height) return;
-
       ctx.fillStyle = line.isAction ? '#C2A2DA' : '#FFFFFF';
       ctx.strokeText(line.text, startX, yPos);
       ctx.fillText(line.text, startX, yPos);
@@ -211,57 +232,33 @@
   });
 
   // ============================================================
-  // DOWNLOAD HANDLER
+  // DOWNLOAD
   // ============================================================
 
   function downloadImage() {
-    if (!uploadedImage) {
-      showToast('Upload gambar terlebih dahulu!');
-      return;
-    }
-
+    if (!uploadedImage) { showToast('Upload gambar dulu!'); return; }
     renderCanvas();
-
     canvas.toBlob(function (blob) {
-      if (!blob) { showToast('Gagal membuat gambar. Coba lagi.'); return; }
-
-      const ts       = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-      const filename = 'ss_rp_' + ts + '.png';
-      const url      = URL.createObjectURL(blob);
-      const a        = document.createElement('a');
+      if (!blob) { showToast('Gagal membuat gambar.'); return; }
+      const ts  = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+      const url = URL.createObjectURL(blob);
+      const a   = document.createElement('a');
       a.href = url;
-      a.download = filename;
+      a.download = 'ss_rp_' + ts + '.png';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-
       showToast('Berhasil diunduh!');
     }, 'image/png');
   }
 
   downloadBtn.addEventListener('click', downloadImage);
-  downloadBtnMobile.addEventListener('click', downloadImage);
+  downloadBtnMob.addEventListener('click', downloadImage);
 
   // ============================================================
-  // HELPERS
+  // TOAST
   // ============================================================
-
-  function updateButtons() {
-    const has = !!uploadedImage;
-    downloadBtn.disabled = !has;
-    downloadBtnMobile.disabled = !has;
-  }
-
-  function setBadge(ready) {
-    if (ready) {
-      previewBadge.textContent = 'Siap diunduh';
-      previewBadge.classList.add('ready');
-    } else {
-      previewBadge.textContent = 'Menunggu gambar...';
-      previewBadge.classList.remove('ready');
-    }
-  }
 
   function showToast(msg) {
     toast.textContent = msg;
@@ -273,12 +270,8 @@
   // INIT
   // ============================================================
 
-  (function init() {
-    fontSizeValue.textContent  = fontSizeSlider.value + 'px';
-    paddingXValue.textContent  = paddingXSlider.value + 'px';
-    paddingYValue.textContent  = paddingYSlider.value + 'px';
-    canvas.style.display = 'none';
-    updateButtons();
-  })();
+  fontSizeValue.textContent  = fontSizeSlider.value + 'px';
+  paddingXValue.textContent  = paddingXSlider.value + 'px';
+  paddingYValue.textContent  = paddingYSlider.value + 'px';
 
 })();

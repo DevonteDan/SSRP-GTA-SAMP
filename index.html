@@ -8,60 +8,103 @@
   <meta name="theme-color" content="#0F0F0F">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="layout">
+  <!-- ============================================
+       SCREEN 1: LANDING (Upload)
+  ============================================= -->
+  <div class="screen" id="screenLanding">
+    <div class="landing-wrap">
 
-    <!-- ============================
-         SIDEBAR (Left Panel)
-    ============================= -->
-    <aside class="sidebar">
-
-      <!-- Brand -->
-      <div class="brand">
-        <div class="brand-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="18" height="18" rx="2"/>
-            <circle cx="8.5" cy="8.5" r="1.5"/>
-            <polyline points="21 15 16 10 5 21"/>
-          </svg>
-        </div>
-        <div>
-          <h1 class="brand-title">SS RP Generator</h1>
-          <p class="brand-sub">GTA SA-MP</p>
-        </div>
+      <!-- Logo / Icon -->
+      <div class="landing-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21 15 16 10 5 21"/>
+        </svg>
       </div>
 
-      <div class="divider"></div>
+      <!-- Headline -->
+      <h1 class="landing-title">Buat <span class="landing-accent">SS RP</span> Instan</h1>
+      <p class="landing-desc">
+        Upload screenshot GTA SA-MP, paste chatlog, dan download hasilnya dalam hitungan detik — tanpa Photoshop.
+      </p>
 
-      <!-- Step 1: Upload -->
-      <div class="section">
-        <div class="section-header">
-          <span class="step-badge">1</span>
-          <span class="section-title">Upload Gambar</span>
+      <!-- Upload Button -->
+      <div class="landing-upload-area" id="landingDropArea">
+        <input type="file" id="fileInputLanding" accept="image/png,image/jpeg,image/webp" hidden>
+
+        <button class="landing-btn" id="landingPickBtn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          Pilih Gambar Screenshot
+        </button>
+
+        <p class="landing-drag-hint">atau seret & lepas gambar ke sini</p>
+        <p class="landing-format-hint">PNG, JPG, WebP</p>
+      </div>
+
+      <!-- Footer -->
+      <p class="landing-privacy">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+        Gambar tidak diunggah ke server mana pun
+      </p>
+
+    </div>
+  </div>
+
+  <!-- ============================================
+       SCREEN 2: EDITOR
+  ============================================= -->
+  <div class="screen hidden" id="screenEditor">
+    <div class="layout">
+
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+
+        <!-- Brand / Back button -->
+        <div class="brand">
+          <button class="back-btn" id="backBtn" title="Kembali ke awal">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"/>
+            </svg>
+          </button>
+          <div class="brand-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+          </div>
+          <div>
+            <h2 class="brand-title">SS RP Generator</h2>
+            <p class="brand-sub">GTA SA-MP</p>
+          </div>
         </div>
 
-        <div class="dropzone" id="dropzone">
-          <input type="file" id="fileInput" accept="image/png,image/jpeg,image/webp" hidden>
-          <div class="dropzone-body" id="dropzoneBody">
-            <div class="dropzone-icon-wrap">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                <polyline points="17 8 12 3 7 8"/>
-                <line x1="12" y1="3" x2="12" y2="15"/>
-              </svg>
-            </div>
-            <p class="dropzone-main">Tarik & lepas gambar di sini</p>
-            <p class="dropzone-hint">atau <button class="link-btn" id="browseBtn">pilih dari komputer</button></p>
-            <p class="dropzone-formats">PNG, JPG, WebP</p>
+        <div class="divider"></div>
+
+        <!-- Step 1: Change Image -->
+        <div class="section">
+          <div class="section-header">
+            <span class="step-badge">1</span>
+            <span class="section-title">Gambar Latar</span>
           </div>
-          <div class="dropzone-preview-wrap" id="dropzonePreviewWrap" hidden>
-            <img id="dropzonePreview" alt="Preview gambar">
-            <button class="change-img-btn" id="changeBtn">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <div class="img-preview-box" id="imgPreviewBox">
+            <input type="file" id="fileInputEditor" accept="image/png,image/jpeg,image/webp" hidden>
+            <img id="editorThumb" alt="Preview gambar">
+            <button class="change-img-btn" id="changeImgBtn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                 <polyline points="17 8 12 3 7 8"/>
                 <line x1="12" y1="3" x2="12" y2="15"/>
@@ -70,115 +113,100 @@
             </button>
           </div>
         </div>
-      </div>
 
-      <!-- Step 2: Chatlog -->
-      <div class="section">
-        <div class="section-header">
-          <span class="step-badge">2</span>
-          <span class="section-title">Paste Chatlog</span>
-        </div>
-        <textarea
-          id="chatlogTextarea"
-          class="chatlog-input"
-          rows="7"
-          placeholder="[10:20:50] * Aiden Brooks melepas radio.&#10;[10:21:05] Aiden Brooks says: Unit 24-King, standby."
-          autocomplete="off"
-          autocorrect="off"
-          spellcheck="false"
-        ></textarea>
-        <p class="field-hint">Timestamp [HH:MM:SS] dihapus otomatis. Teks aksi (*) berwarna ungu.</p>
-      </div>
-
-      <!-- Step 3: Settings -->
-      <div class="section">
-        <div class="section-header">
-          <span class="step-badge">3</span>
-          <span class="section-title">Pengaturan Teks</span>
-        </div>
-        <div class="settings-grid">
-          <div class="setting-item">
-            <div class="setting-label">
-              <span>Ukuran Font</span>
-              <span class="setting-val" id="fontSizeValue">16px</span>
-            </div>
-            <input type="range" id="fontSizeSlider" min="10" max="32" value="16">
+        <!-- Step 2: Chatlog -->
+        <div class="section">
+          <div class="section-header">
+            <span class="step-badge">2</span>
+            <span class="section-title">Paste Chatlog</span>
           </div>
-          <div class="setting-item">
-            <div class="setting-label">
-              <span>Margin Kiri</span>
-              <span class="setting-val" id="paddingXValue">10px</span>
-            </div>
-            <input type="range" id="paddingXSlider" min="0" max="100" value="10">
-          </div>
-          <div class="setting-item">
-            <div class="setting-label">
-              <span>Margin Atas</span>
-              <span class="setting-val" id="paddingYValue">10px</span>
-            </div>
-            <input type="range" id="paddingYSlider" min="0" max="100" value="10">
-          </div>
-        </div>
-      </div>
-
-      <div class="sidebar-footer">
-        <p class="privacy-note">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-          </svg>
-          Data kamu tidak dikirim ke server mana pun
-        </p>
-      </div>
-
-    </aside>
-
-    <!-- ============================
-         MAIN (Right Panel)
-    ============================= -->
-    <main class="preview-panel">
-      <div class="preview-inner">
-
-        <div class="preview-header">
-          <p class="preview-label">Live Preview</p>
-          <div class="preview-badge" id="previewBadge">Menunggu gambar...</div>
+          <textarea
+            id="chatlogTextarea"
+            class="chatlog-input"
+            rows="7"
+            placeholder="[10:20:50] * Aiden Brooks melepas radio.&#10;[10:21:05] Aiden Brooks says: Unit 24-King, standby."
+            autocomplete="off"
+            autocorrect="off"
+            spellcheck="false"
+          ></textarea>
+          <p class="field-hint">Timestamp [HH:MM:SS] dihapus otomatis. Teks aksi (*) berwarna ungu.</p>
         </div>
 
-        <!-- Canvas Area -->
-        <div class="canvas-wrap" id="canvasWrap">
-          <div class="canvas-empty" id="canvasEmpty">
-            <div class="empty-icon">
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="3" width="18" height="18" rx="2"/>
-                <circle cx="8.5" cy="8.5" r="1.5"/>
-                <polyline points="21 15 16 10 5 21"/>
-              </svg>
-            </div>
-            <p class="empty-title">Belum ada gambar</p>
-            <p class="empty-desc">Upload gambar di panel kiri untuk melihat preview</p>
+        <!-- Step 3: Settings -->
+        <div class="section">
+          <div class="section-header">
+            <span class="step-badge">3</span>
+            <span class="section-title">Pengaturan Teks</span>
           </div>
-          <canvas id="previewCanvas"></canvas>
+          <div class="settings-grid">
+            <div class="setting-item">
+              <div class="setting-label">
+                <span>Ukuran Font</span>
+                <span class="setting-val" id="fontSizeValue">16px</span>
+              </div>
+              <input type="range" id="fontSizeSlider" min="10" max="32" value="16">
+            </div>
+            <div class="setting-item">
+              <div class="setting-label">
+                <span>Margin Kiri</span>
+                <span class="setting-val" id="paddingXValue">10px</span>
+              </div>
+              <input type="range" id="paddingXSlider" min="0" max="100" value="10">
+            </div>
+            <div class="setting-item">
+              <div class="setting-label">
+                <span>Margin Atas</span>
+                <span class="setting-val" id="paddingYValue">10px</span>
+              </div>
+              <input type="range" id="paddingYSlider" min="0" max="100" value="10">
+            </div>
+          </div>
         </div>
 
-        <!-- Download Button -->
-        <button class="download-btn" id="downloadBtn" disabled>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-            <polyline points="7 10 12 15 17 10"/>
-            <line x1="12" y1="15" x2="12" y2="3"/>
-          </svg>
-          Download SS RP (.PNG)
-        </button>
+        <div class="sidebar-footer">
+          <p class="privacy-note">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            Data kamu tidak dikirim ke server mana pun
+          </p>
+        </div>
 
-      </div>
-    </main>
+      </aside>
 
+      <!-- PREVIEW PANEL -->
+      <main class="preview-panel">
+        <div class="preview-inner">
+
+          <div class="preview-header">
+            <p class="preview-label">Live Preview</p>
+            <div class="preview-badge" id="previewBadge">Siap diunduh</div>
+          </div>
+
+          <div class="canvas-wrap">
+            <canvas id="previewCanvas"></canvas>
+          </div>
+
+          <button class="download-btn" id="downloadBtn">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Download SS RP (.PNG)
+          </button>
+
+        </div>
+      </main>
+
+    </div>
   </div>
 
   <!-- Mobile Download Bar -->
-  <div class="mobile-bar">
-    <button class="download-btn mobile-dl-btn" id="downloadBtnMobile" disabled>
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <div class="mobile-bar" id="mobileBar">
+    <button class="download-btn" id="downloadBtnMobile">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
         <polyline points="7 10 12 15 17 10"/>
         <line x1="12" y1="15" x2="12" y2="3"/>
