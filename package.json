@@ -1,0 +1,23 @@
+{
+  "name": "ss-gta-samp",
+  "version": "1.0.0",
+  "description": "Aplikasi web gratis untuk membuat **Screenshot Roleplay (SS RP)** GTA San Andreas Multiplayer (SA-MP) secara instan — tanpa Photoshop!",
+  "main": "app.js",
+  "scripts": {
+    "dev": "vite",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DevonteDan/SSRP-GTA-SAMP.git"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/DevonteDan/SSRP-GTA-SAMP/issues"
+  },
+  "homepage": "https://github.com/DevonteDan/SSRP-GTA-SAMP#readme",
+  "devDependencies": {
+    "vite": "^8.1.5"
+  }
+}
