@@ -1,32 +1,46 @@
-# SS GTA SAMP Project 🚗💥
+# SAMP RP Screenshot Generator 🎮📸
 
-Selamat datang di repository **SS GTA SAMP**! Repository ini berisi kode, skrip, serta pembaruan terbaru untuk proyek GTA San Andreas Multiplayer (SA-MP).
-
----
-
-## 📌 Deskripsi Proyek
-Proyek ini dikembangkan untuk mengelola skrip dan sistem pendukung permainan **GTA San Andreas Multiplayer (SA-MP)**. Semua pembaruan dan perubahan kode akan disinkronkan secara otomatis ke repository ini.
+Aplikasi web gratis untuk membuat **Screenshot Roleplay (SS RP)** GTA San Andreas Multiplayer (SA-MP) secara instan — tanpa Photoshop!
 
 ---
 
-## 🚀 Fitur & Pembaruan
-- [x] Inisialisasi Repository Git
-- [x] Dokumentasi Proyek (`README.md`)
-- [ ] *Pengembangan fitur & skrip utama GTA SA-MP*
+## ✨ Fitur Utama
+- **Upload Gambar** — Drag-and-drop atau klik untuk unggah screenshot (PNG, JPG, WebP)
+- **Paste Chatlog** — Tempel chatlog mentah dari `chatlog.txt`
+- **Hapus Timestamp Otomatis** — Format `[HH:MM:SS]` dihapus otomatis
+- **Pewarnaan Otomatis** — Teks aksi `/me` & `/do` (diawali `*`) berwarna ungu khas SAMP
+- **Live Preview** — Pratinjau langsung di canvas saat kamu mengetik
+- **Pengaturan Teks** — Atur ukuran font, padding horizontal & vertikal
+- **Download PNG** — Unduh hasil akhir sebagai file `.png` resolusi penuh
+- **100% Client-Side** — Gambar & chatlog tidak diunggah ke server mana pun
 
 ---
 
-## 🛠️ Cara Penggunaan / Instalasi
-1. Clone repository ini:
-   ```bash
-   git clone <URL_REPOSITORY_GITHUB_ANDA>
-   ```
-2. Ikuti instruksi konfigurasi skrip sesuai kebutuhan proyek.
+## 🚀 Cara Pakai
+1. Buka `index.html` di browser
+2. Upload screenshot game kamu
+3. Paste chatlog dari `chatlog.txt`
+4. Atur ukuran font & posisi teks sesuai keinginan
+5. Klik **"Download SS RP (.PNG)"**
 
 ---
 
-## 📝 Log Pembaruan (Update History)
-Setiap perubahan dan pembaruan kode baru akan secara otomatis di-commit dan di-push ke repository ini.
+## 🛠️ Tech Stack
+- HTML5 Canvas
+- Vanilla CSS (Dark Mode)
+- Vanilla JavaScript (No Framework)
 
 ---
-*Dikembangkan dengan bantuan AI Assistant.*
+
+## 📁 Struktur File
+```
+SS Gta SAMP/
+├── index.html    # Halaman utama
+├── style.css     # Stylesheet (Dark Mode)
+├── app.js        # Logika JavaScript
+└── README.md     # Dokumentasi
+```
+
+---
+
+*Dikembangkan untuk komunitas SAMP Indonesia 🇮🇩*

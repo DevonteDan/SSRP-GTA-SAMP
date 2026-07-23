@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAMP RP Screenshot Generator — Buat SS RP Instan</title>
+  <meta name="description" content="Aplikasi web gratis untuk membuat Screenshot Roleplay (SS RP) GTA SA-MP secara instan. Upload gambar, paste chatlog, download PNG — tanpa Photoshop!">
+  <meta name="theme-color" content="#121212">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-container">
+
+    <!-- ============================================ -->
+    <!-- LEFT PANEL — Controls                        -->
+    <!-- ============================================ -->
+    <aside class="panel-controls" id="panelControls">
+
+      <!-- Header -->
+      <header class="app-header fade-in">
+        <h1>SS RP <span class="accent">Generator</span></h1>
+        <p class="subtitle">Upload screenshot, paste chatlog, dan download SS RP kamu dalam hitungan detik.</p>
+      </header>
+
+      <!-- Image Upload Dropzone -->
+      <div class="dropzone-wrapper fade-in">
+        <p class="section-label">📷 Gambar Latar</p>
+        <div class="dropzone" id="dropzone">
+          <input type="file" class="dropzone-file-input" id="fileInput" accept="image/png, image/jpeg, image/webp">
+          <div class="dropzone-icon">🖼️</div>
+          <p class="dropzone-text">
+            Tarik & lepas gambar di sini,<br>atau <strong>klik untuk memilih file</strong>
+          </p>
+          <p class="dropzone-hint">Format: PNG, JPG, WebP</p>
+          <img class="dropzone-preview" id="dropzonePreview" alt="Preview gambar yang diunggah">
+        </div>
+        <button class="dropzone-change-btn" id="changeBtn">Ganti gambar</button>
+      </div>
+
+      <!-- Chatlog Textarea -->
+      <div class="chatlog-wrapper fade-in">
+        <p class="section-label">💬 Chatlog</p>
+        <textarea
+          class="chatlog-textarea"
+          id="chatlogTextarea"
+          rows="8"
+          placeholder="Paste chatlog kamu di sini...&#10;[10:20:50] * Aiden Brooks melepas radio.&#10;[10:21:05] Aiden Brooks says: Unit 24-King, standby.&#10;[10:21:10] * Aiden Brooks mengambil senjata dari holster."
+          autocomplete="off"
+          autocorrect="off"
+          spellcheck="false"
+        ></textarea>
+      </div>
+
+      <!-- Settings Panel -->
+      <div class="settings-panel fade-in">
+        <p class="section-label">⚙️ Pengaturan Teks</p>
+
+        <div class="setting-row">
+          <label>
+            Ukuran Font
+            <span class="setting-value" id="fontSizeValue">16px</span>
+          </label>
+          <input type="range" id="fontSizeSlider" min="10" max="32" value="16" step="1">
+        </div>
+
+        <div class="setting-row">
+          <label>
+            Padding X (Horizontal)
+            <span class="setting-value" id="paddingXValue">10px</span>
+          </label>
+          <input type="range" id="paddingXSlider" min="0" max="100" value="10" step="1">
+        </div>
+
+        <div class="setting-row">
+          <label>
+            Padding Y (Vertikal)
+            <span class="setting-value" id="paddingYValue">10px</span>
+          </label>
+          <input type="range" id="paddingYSlider" min="0" max="100" value="10" step="1">
+        </div>
+      </div>
+
+      <!-- Footer Note -->
+      <p class="footer-note">
+        100% Client-Side — Gambar & chatlog kamu tidak diunggah ke server mana pun.
+      </p>
+
+    </aside>
+
+    <!-- ============================================ -->
+    <!-- RIGHT PANEL — Live Preview                   -->
+    <!-- ============================================ -->
+    <main class="panel-preview" id="panelPreview">
+
+      <div class="preview-sticky">
+        <!-- Canvas Container -->
+        <div class="canvas-container" id="canvasContainer">
+          <div class="canvas-placeholder" id="canvasPlaceholder">
+            <div class="canvas-placeholder-icon">🎮</div>
+            <p class="canvas-placeholder-text">
+              Live Preview akan muncul di sini<br>setelah kamu upload gambar.
+            </p>
+          </div>
+          <canvas id="previewCanvas"></canvas>
+        </div>
+
+        <!-- Download Button (Desktop) -->
+        <button class="btn btn-primary desktop-download" id="downloadBtnDesktop" disabled>
+          ⬇️ Download SS RP (.PNG)
+        </button>
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- Mobile Floating Action Bar -->
+  <div class="mobile-action-bar">
+    <button class="btn btn-primary" id="downloadBtnMobile" disabled>
+      ⬇️ Download SS RP (.PNG)
+    </button>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <!-- JavaScript -->
+  <script src="app.js"></script>
+
+</body>
+</html>
